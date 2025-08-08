@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servidor y Despliegue: GlassFish y Java EE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../style/EstiloGeneral.css">
+    <style>
+        pre {
+            background-color: #f4f8fb;
+            border: 1px solid #dbeafe;
+            border-radius: 6px;
+            padding: 1rem;
+            font-size: 1rem;
+            font-family: 'Fira Mono', 'Consolas', 'Menlo', monospace;
+            color: #22223b;
+            margin: 1.2em 0;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo" style="margin-right:1.5rem;">
+                <a href="../index.html"><i class="fa-solid fa-server"></i> Guía de Tecnologías Web y Java EE</a>
+            </div>
+            <ul class="nav-links" style="margin:0;">
+                <li class="dropdown" id="menuDropdown">
+                    <a class="dropbtn" href="#" id="menuBtn" aria-expanded="false" aria-haspopup="true">
+                        <i class="fa-solid fa-bars"></i> Menú
+                    </a>
+                    <div class="dropdown-content" id="dropdownContent" aria-label="submenu">
+                        <a href="TecnologiasWeb.html"><i class="fa-solid fa-code"></i> Frontend</a>
+                        <a href="JavaEE.html"><i class="fa-brands fa-java"></i> Backend Java EE</a>
+                        <a href="PersistenceORM.html"><i class="fa-solid fa-database"></i> Persistencia</a>
+                        <a href="HerramientasModelos.html"><i class="fa-solid fa-toolbox"></i> Herramientas</a>
+                        <a href="ServidorYDespliegue.html"><i class="fa-solid fa-server"></i> Servidor</a>
+                        <div style="border-top:1px solid #e0e7ff; margin:0.5rem 0;"></div>
+                        <a href="#recursos"><i class="fa-solid fa-link"></i> Recursos</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="https://kinal.org.gt/" target="_blank" class="dropbtn"><i class="fa-solid fa-school"></i> Kinal</a>
+                </li>
+            </ul>
+        </nav>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const menuBtn = document.getElementById('menuBtn');
+                const dropdown = document.getElementById('dropdownContent');
+                let open = false;
+
+                menuBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    open = !open;
+                    dropdown.style.display = open ? 'block' : 'none';
+                    menuBtn.setAttribute('aria-expanded', open);
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!menuBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.style.display = 'none';
+                        open = false;
+                        menuBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === "Escape") {
+                        dropdown.style.display = 'none';
+                        open = false;
+                        menuBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            });
+        </script>
+    </header>
+
+    <div class="container">
+        <div class="hero-section">
+            <h1><i class="fa-solid fa-server"></i> Servidor y Despliegue</h1>
+            <p>GlassFish Server y el proceso de despliegue en Java EE</p>
+        </div>
+        <main>
+            <section id="glassfish">
+                <h2><i class="fa-solid fa-server"></i> ¿Qué es GlassFish Server?</h2>
+                <p>
+                    <strong>GlassFish Server</strong> es un servidor de aplicaciones de código abierto compatible con la especificación Java EE. Proporciona el entorno de ejecución necesario para desplegar, administrar y ejecutar aplicaciones empresariales basadas en Java, como las que utilizan Servlets, JSP, EJB y JPA.
+                </p>
+                <ul>
+                    <li><strong>Servidor de Aplicaciones:</strong> Proporciona un contenedor web y un contenedor EJB.</li>
+                    <li><strong>Soporte Java EE:</strong> Implementa las APIs de Java EE, garantizando la compatibilidad con las tecnologías estándar.</li>
+                    <li><strong>Herramientas de Administración:</strong> Ofrece una consola de administración web para gestionar las aplicaciones y la configuración del servidor.</li>
+                </ul>
+            </section>
+
+            <section id="tipos">
+                <h2><i class="fa-solid fa-puzzle-piece"></i> Tipos de Servidores de Aplicaciones</h2>
+                <p>
+                    Existen diferentes tipos de servidores de aplicaciones:
+                </p>
+                <ul>
+                    <li><strong>Contenedores Web:</strong> Servidores ligeros que solo implementan el contenedor de Servlets y JSP. Ejemplo: Apache Tomcat. Ideales para aplicaciones web simples.</li>
+                    <li><strong>Servidores de Aplicaciones Completos:</strong> Implementan toda la especificación de Java EE, incluyendo EJB, JPA, JMS, etc. Ejemplos: GlassFish Server y WildFly. Perfectos para aplicaciones empresariales grandes.</li>
+                </ul>
+            </section>
+
+            <section id="despliegue"></section>
+                <h2><i class="fa-solid fa-shoe-prints"></i> Proceso de Despliegue (Paso a Paso)</h2>
+                <ol>
+                    <li><strong>Empaquetado del Proyecto:</strong> Desde tu IDE, utiliza Maven para empaquetar tu proyecto en un archivo <code>.war</code>.<br>
+                        <pre>mvn package</pre>
+                        El archivo <code>mi-proyecto.war</code> se genera en la carpeta <code>target/</code>.
+                    </li>
+                    <li><strong>Acceso a la Consola de Administración:</strong> Abre tu navegador y navega a <a href="http://localhost:4848" target="_blank">http://localhost:4848</a>.</li>
+                    <li><strong>Subida de la Aplicación:</strong> En la consola, ve a la sección "Applications" y haz clic en "Deploy". Sube tu archivo <code>.war</code> desde la carpeta <code>target/</code>.</li>
+                    <li><strong>Verificación del Despliegue:</strong> Una vez completado el despliegue, GlassFish indicará que la aplicación se ha subido correctamente. Puedes acceder a ella en <code>http://localhost:8080/nombre-del-proyecto/</code>.</li>
+                </ol>
+            </section>
+
+            <section id="configuracion">
+                <h2><i class="fa-solid fa-gears"></i> Configuración del Servidor</h2>
+                <p>
+                    El servidor no solo ejecuta la aplicación, sino que también gestiona los recursos que esta utiliza. Un ejemplo clave es la conexión a la base de datos:
+                </p>
+                <ul>
+                    <li><strong>DataSources:</strong> Un DataSource es un objeto que el servidor utiliza para gestionar un pool de conexiones a una base de datos. Se configura una vez en la consola de administración de GlassFish y la aplicación puede acceder a él a través de JNDI, evitando tener que configurar la conexión en cada clase.</li>
+                </ul>
+                <div>
+                    <strong>Ejemplo de acceso a DataSource vía JNDI:</strong>
+                    <pre>
+InitialContext ctx = new InitialContext();
+DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/miDataSource");
+Connection conn = ds.getConnection();
+                    </pre>
+                </div>
+            </section>
+
+            <section id="diferencias">
+                <h2><i class="fa-solid fa-box-archive"></i> Diferencia entre Archivos .war y .ear</h2>
+                <ul>
+                    <li><strong>.war (Web Application Archive):</strong> Se usa para empaquetar aplicaciones web que consisten en Servlets, JSP, JSF, HTML, CSS y JavaScript. Es el formato más común para proyectos web.</li>
+                    <li><strong>.ear (Enterprise Application Archive):</strong> Se usa para empaquetar aplicaciones empresariales más grandes y complejas que contienen múltiples módulos, como <code>.war</code> y <code>.jar</code> (que pueden contener EJB).</li>
+                </ul>
+            </section>
+
+            <section id="ventajas">
+                <h2><i class="fa-solid fa-thumbs-up"></i> Aplicaciones y Ventajas</h2>
+                <ul>
+                    <li>Despliegue de aplicaciones web y empresariales de mediana a gran escala que utilizan tecnologías Java EE.</li>
+                    <li>Proporciona un entorno de ejecución completo y robusto, simplifica el despliegue de archivos <code>.war</code> y <code>.ear</code>, y ofrece herramientas de administración para monitorear la aplicación.</li>
+                </ul>
+            </section>
+
+            <section id="conclusion">
+                <h2><i class="fa-solid fa-flag-checkered"></i> Conclusión</h2>
+                <p>
+                    El servidor de aplicaciones GlassFish es un pilar central en el despliegue de aplicaciones Java EE. Proporciona un entorno robusto y completo que permite ejecutar componentes empresariales, garantizando seguridad, escalabilidad y un ciclo de vida bien definido para la aplicación.
+                </p>
+            </section>
+        </main>
+    </div>
+    <div class="footer">
+        &copy; 2024 Tecnologías Java EE | Proyecto Web 3er Bim
+    </div>
+</body>
+</html>
