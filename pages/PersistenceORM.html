@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Persistencia y ORM: JNDI, JPA, Hibernate, DAO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="shortcut icon" href="../images/Logo2.png" type="image/png">
+    <link rel="stylesheet" href="../style/EstiloGeneral.css">
+    <style>
+        pre {
+            background-color: #f4f8fb;
+            border: 1px solid #dbeafe;
+            border-radius: 6px;
+            padding: 1rem;
+            font-size: 1rem;
+            font-family: 'Fira Mono', 'Consolas', 'Menlo', monospace;
+            color: #22223b;
+            margin: 1.2em 0;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+        <header class="header">
+        <nav class="navbar">
+            <div class="logo" style="margin-right:1.5rem;">
+                <a href="../index.html"><i class="fa-solid fa-globe"></i> Guía de Tecnologías Web y Java EE</a>
+            </div>
+            <ul class="nav-links" style="margin:0;">
+                <li class="dropdown" id="menuDropdown">
+                    <a class="dropbtn" href="#" id="menuBtn" aria-expanded="false" aria-haspopup="true">
+                        <i class="fa-solid fa-bars"></i> Menú
+                    </a>
+                    <div class="dropdown-content" id="dropdownContent" aria-label="submenu">
+                        <a href="TecnologiasWeb.html"><i class="fa-solid fa-code"></i> Frontend</a>
+                        <a href="JavaEE.html"><i class="fa-brands fa-java"></i> Backend Java EE</a>
+                        <a href="PersistenceORM.html"><i class="fa-solid fa-database"></i> Persistencia</a>
+                        <a href="HerramientasModelos.html"><i class="fa-solid fa-toolbox"></i> Herramientas</a>
+                        <a href="ServidorYDespliegue.html"><i class="fa-solid fa-server"></i> Servidor</a>
+                        <div style="border-top:1px solid #e0e7ff; margin:0.5rem 0;"></div>
+                        <a href="#recursos"><i class="fa-solid fa-link"></i> Recursos</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="https://kinal.org.gt/" target="_blank" class="dropbtn"><i class="fa-solid fa-school"></i> Kinal</a>
+                </li>
+            </ul>
+        </nav>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const menuBtn = document.getElementById('menuBtn');
+                const dropdown = document.getElementById('dropdownContent');
+                let open = false;
+
+                menuBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    open = !open;
+                    dropdown.style.display = open ? 'block' : 'none';
+                    menuBtn.setAttribute('aria-expanded', open);
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!menuBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.style.display = 'none';
+                        open = false;
+                        menuBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === "Escape") {
+                        dropdown.style.display = 'none';
+                        open = false;
+                        menuBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            });
+        </script>
+    </header>
+
+    <div class="container">
+        <div class="hero-section">
+            <h1><i class="fa-solid fa-database"></i> Persistencia y ORM en Aplicaciones Java</h1>
+            <p>JNDI, Persistence, JPA, Hibernate, DAO</p>
+        </div>
+        <main>
+            <section id="persistencia">
+                <h2><i class="fa-solid fa-database"></i> ¿Qué es la Persistencia?</h2>
+                <p>
+                La <strong>persistencia</strong> en el desarrollo de software se refiere a la capacidad de almacenar y recuperar datos de manera permanente, generalmente en una base de datos. Esto permite que la información sobreviva después de que la aplicación se cierre o reinicie. Sin persistencia, los datos solo existirían en memoria y se perderían al apagar el sistema. Por eso, la persistencia es fundamental para aplicaciones que requieren guardar información de usuarios, transacciones, configuraciones, historiales, entre otros. Los mecanismos de persistencia pueden ser archivos, bases de datos relacionales, bases de datos NoSQL, o incluso servicios externos.
+                </p>
+                <div style="text-align:center;">
+                    <img src="../images/PersistenciaDatos.jpg" alt="Persistencia de datos" style="max-width:60%; height:auto;">
+                </div>
+            </section>
+
+            <section id="orm">
+                <h2><i class="fa-solid fa-object-group"></i> ¿Qué es un ORM?</h2>
+                <p>
+                Un <strong>ORM (Object-Relational Mapping)</strong> es una técnica que permite mapear objetos de un lenguaje de programación orientado a objetos (como Java) a tablas de una base de datos relacional. Facilita la manipulación de datos sin escribir SQL directamente, ya que traduce automáticamente las operaciones sobre objetos en instrucciones SQL. Esto ayuda a mantener el código más limpio, seguro y fácil de mantener. Además, los ORM suelen encargarse de tareas como la gestión de conexiones, transacciones y el manejo de relaciones entre entidades, permitiendo a los desarrolladores centrarse en la lógica de negocio.
+                </p>
+                <div style="text-align:center;">
+                    <img src="../images/ArquitecturaORM.png" alt="Arquitectura ORM" style="max-width:25%; height:auto;">
+                </div>
+            </section>
+
+            <section id="jndi">
+                <h2><i class="fa-solid fa-sitemap"></i> JNDI (Java Naming and Directory Interface)</h2>
+                <p>
+                    <strong>JNDI</strong> es una API de Java que permite a las aplicaciones buscar y acceder a recursos como bases de datos, servicios de correo, colas de mensajes, etc., mediante nombres. Es fundamental para la configuración de recursos en servidores de aplicaciones, ya que desacopla la configuración del código fuente. Por ejemplo, una aplicación puede solicitar un recurso por su nombre lógico, y el servidor se encarga de proporcionar la instancia real, facilitando la portabilidad y la administración centralizada de recursos. JNDI es ampliamente utilizado en entornos empresariales para gestionar conexiones a bases de datos a través de DataSources.
+                </p>
+                <div>
+                    <strong>Ejemplo:</strong> Configuración de un DataSource en un servidor de aplicaciones y su acceso vía JNDI en Java.
+                </div>
+                <pre>
+InitialContext ctx = new InitialContext();
+DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/miDataSource");
+Connection conn = ds.getConnection();
+                </pre>
+            </section>
+
+            <section id="jpa">
+                <h2><i class="fa-solid fa-layer-group"></i> Persistence y JPA (Java Persistence API)</h2>
+                <p>
+                    <strong>JPA</strong> es una especificación de Java para la gestión de datos relacionales mediante ORM. Define cómo mapear clases Java a tablas de bases de datos y proporciona una API estándar para operaciones CRUD (crear, leer, actualizar, eliminar). JPA introduce un conjunto de anotaciones que permiten definir entidades, relaciones y reglas de persistencia directamente en el código Java. Además, permite realizar consultas avanzadas usando JPQL (Java Persistence Query Language), que es similar a SQL pero orientada a objetos. JPA no es una implementación en sí, sino una especificación que es implementada por frameworks como Hibernate y EclipseLink, lo que permite cambiar de proveedor sin modificar el código de la aplicación.
+                </p>
+                <ul>
+                    <li>Define anotaciones como <code>@Entity</code>, <code>@Id</code>, <code>@Table</code>.</li>
+                    <li>Permite consultas con JPQL (Java Persistence Query Language).</li>
+                    <li>Es implementada por frameworks como Hibernate y EclipseLink.</li>
+                </ul>
+                <div>
+                    <strong>Ejemplo de entidad JPA:</strong>
+                </div>
+                <pre>
+@Entity
+@Table(name = "usuarios")
+public class Usuario {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String nombre;
+    private String email;
+    // getters y setters
+}
+                </pre>
+            </section>
+
+            <section id="hibernate">
+                <h2><i class="fa-brands fa-java"></i> Hibernate</h2>
+                <p>
+                    <strong>Hibernate</strong> es el framework ORM más popular en Java y una implementación de JPA. Simplifica el acceso y manipulación de datos, gestiona el ciclo de vida de las entidades y soporta transacciones, caché y lazy loading. Hibernate automatiza el mapeo entre clases Java y tablas SQL, permitiendo que los desarrolladores trabajen con objetos en lugar de registros de base de datos. Además, ofrece características avanzadas como validaciones automáticas, migraciones de esquema, y soporte para consultas HQL (Hibernate Query Language), que es similar a JPQL pero específica de Hibernate. Su uso reduce la cantidad de código repetitivo y facilita la integración con diferentes bases de datos.
+                </p>
+                <ul>
+                    <li>Automatiza el mapeo entre clases Java y tablas SQL.</li>
+                    <li>Permite migraciones de base de datos y validaciones.</li>
+                    <li>Soporta consultas HQL (Hibernate Query Language).</li>
+                </ul>
+            </section>
+
+            <section id="dao">
+                <h2><i class="fa-solid fa-table-list"></i> DAO (Data Access Object)</h2>
+                <p>
+                    El patrón <strong>DAO</strong> separa la lógica de acceso a datos del resto de la aplicación. Define una interfaz para operaciones CRUD y permite cambiar la implementación (JDBC, JPA, Hibernate) sin afectar la lógica de negocio. Esto mejora la mantenibilidad y escalabilidad del software, ya que los cambios en la forma de acceder a los datos no impactan en otras capas de la aplicación. Además, facilita la realización de pruebas unitarias y la reutilización del código. El patrón DAO es ampliamente utilizado en aplicaciones empresariales para lograr una arquitectura limpia y desacoplada.
+                </p>
+                <div>
+                    <strong>Ejemplo de interfaz DAO:</strong>
+                </div>
+                <pre>
+public interface UsuarioDAO {
+    void guardar(Usuario usuario);
+    Usuario buscarPorId(Long id);
+    List&lt;Usuario&gt; listarTodos();
+    void eliminar(Long id);
+}
+                </pre>
+            </section>
+
+            <section id="implementacion">
+                <h2><i class="fa-solid fa-gears"></i> ¿Cómo implementar la persistencia y ORM?</h2>
+                <ol>
+                    <li>Configura el <strong>DataSource</strong> y JNDI en tu servidor de aplicaciones para gestionar las conexiones a la base de datos de forma eficiente y centralizada.</li>
+                    <li>Define las entidades JPA con anotaciones, especificando cómo se mapean las clases y sus atributos a las tablas y columnas de la base de datos.</li>
+                    <li>Utiliza un framework ORM como Hibernate para automatizar el proceso de persistencia y aprovechar características avanzadas como el manejo de transacciones y caché.</li>
+                    <li>Implementa el patrón DAO para separar la lógica de acceso a datos, facilitando el mantenimiento y la posibilidad de cambiar la tecnología de persistencia en el futuro.</li>
+                    <li>Realiza operaciones CRUD usando EntityManager (JPA) o Session (Hibernate), aprovechando las ventajas de trabajar con objetos y consultas orientadas a objetos.</li>
+                </ol>
+            </section>
+
+            <section id="ventajas">
+                <h2><i class="fa-solid fa-thumbs-up"></i> Aplicaciones y Ventajas</h2>
+                <ul>
+                    <li>Desarrollo de aplicaciones empresariales robustas y escalables, capaces de manejar grandes volúmenes de datos y usuarios concurrentes.</li>
+                    <li>Facilita el mantenimiento y la evolución del software, ya que los cambios en la base de datos o en la lógica de acceso a datos se pueden gestionar de forma aislada.</li>
+                    <li>Reduce el código repetitivo y los errores en consultas SQL, permitiendo a los desarrolladores centrarse en la lógica de negocio.</li>
+                    <li>Permite independencia de la base de datos subyacente, facilitando la migración entre diferentes motores de base de datos sin grandes cambios en el código.</li>
+                </ul>
+            </section>
+
+            <section id="conclusion">
+                <h2><i class="fa-solid fa-flag-checkered"></i> Conclusión</h2>
+                <p>
+                    La persistencia y el uso de ORM son fundamentales en el desarrollo de aplicaciones modernas. Tecnologías como JNDI, JPA, Hibernate y el patrón DAO permiten gestionar datos de forma eficiente, segura y escalable. Adoptar estas herramientas y patrones no solo mejora la calidad del software, sino que también facilita su mantenimiento, evolución y adaptación a nuevas necesidades tecnológicas.
+                </p>
+            </section>
+        </main>
+    </div>
+    <div class="footer">
+        &copy; 2024 Persistencia y ORM | Proyecto Web 3er Bim
+    </div>
+</body>
+</html>
