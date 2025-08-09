@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tecnologías Web: HTML, CSS y Bootstrap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../style/EstiloGeneral.css">
+    <style>
+        .hero-section {
+            border-radius: 1.2rem;
+            box-shadow: 0 4px 24px #c7d2fe44;
+            padding: 2.5rem 1.5rem 1.5rem 1.5rem;
+            margin: 2rem 0 2.5rem 0;
+            text-align: center;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+        }
+
+        section h2 {
+            margin-bottom: 1rem;
+        }
+
+        pre {
+            background-color: #f4f8fb;
+            border: 1px solid #dbeafe;
+            border-radius: 6px;
+            padding: 1rem;
+            font-size: 1rem;
+            font-family: 'Fira Mono', 'Consolas', 'Menlo', monospace;
+            margin: 1.2em 0;
+            overflow-x: auto;
+        }
+
+        .tech-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .img-fluid {
+            border-radius: 0.7rem;
+            box-shadow: 0 2px 12px #c7d2fe55;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 1rem 0 0.5rem 0;
+            margin-top: 2rem;
+            font-size: 1rem;
+        }
+
+        .card-tech {
+            border-radius: 1rem;
+            box-shadow: 0 2px 12px #c7d2fe33;
+            padding: 2rem 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .text-muted {
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 1.5rem;
+            }
+
+            .card-tech {
+                padding: 1.2rem 0.7rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo" style="margin-right:1.5rem;">
+                <a href="../index.html"><i class="fa-solid fa-globe"></i> Guía de Tecnologías Web y Java
+                    EE</a>
+            </div>
+            <ul class="nav-links" style="margin:0;">
+                <li class="dropdown" id="menuDropdown">
+                    <a class="dropbtn" href="#" id="menuBtn" aria-expanded="false" aria-haspopup="true">
+                        <i class="fa-solid fa-bars"></i> Menú
+                    </a>
+                    <div class="dropdown-content" id="dropdownContent" aria-label="submenu">
+                        <a href="TecnologiasWeb.html"><i class="fa-solid fa-code"></i>
+                            Frontend</a>
+                        <a href="JavaEE.html"><i class="fa-brands fa-java"></i> Backend Java
+                            EE</a>
+                        <a href="PersistenceORM.html"><i class="fa-solid fa-database"></i>
+                            Persistencia</a>
+                        <a href="HerramientasModelos.html"><i class="fa-solid fa-toolbox"></i>
+                            Herramientas</a>
+                        <a href="ServidorYDespliegue.html"><i class="fa-solid fa-server"></i>
+                            Servidor</a>
+                        div style="border-top:1px solid #e0e7ff; margin:0.5rem 0;">
+                    </div>
+                    </div>
+                </li>
+                <li>
+                    <a href="https://kinal.org.gt/" target="_blank" class="dropbtn"><i class="fa-solid fa-school"></i>
+                        Kinal</a>
+                </li>
+            </ul>
+        </nav>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const menuBtn = document.getElementById('menuBtn');
+                const dropdown = document.getElementById('dropdownContent');
+                let open = false;
+
+                menuBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    open = !open;
+                    dropdown.style.display = open ? 'block' : 'none';
+                    menuBtn.setAttribute('aria-expanded', open);
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!menuBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.style.display = 'none';
+                        open = false;
+                    }
+                });
+
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === "Escape") {
+                        dropdown.style.display = 'none';
+                        open = false;
+                    }
+                });
+            });
+        </script>
+    </header>
+
+    <div class="container my-5">
+        <div class="hero-section">
+            <h1><i class="fa-solid fa-code"></i> Tecnologías Web: HTML, CSS y Bootstrap</h1>
+            <p>Descubre cómo estas tecnologías forman la base del desarrollo frontend moderno.</p>
+        </div>
+
+        <section class="card-tech">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2><span class="tech-icon"><i class="fa-brands fa-html5"></i></span> HTML</h2>
+                    <p>
+                        <strong>HTML (HyperText Markup Language)</strong> es el lenguaje de
+                        marcado fundamental que define la estructura y el contenido de una página web. Piensa en HTML
+                        como los "huesos" de una página: sin él, no habría dónde colocar el texto, las imágenes o los
+                        videos. Sus etiquetas, como <code>&lt;h1&gt;</code> para títulos y <code>&lt;p&gt;</code> para
+                        párrafos, organizan el contenido de forma semántica, haciendo que la página sea legible tanto
+                        para los navegadores como para los motores de búsqueda.
+                    </p>
+                    <p>Ejemplo básico de HTML:</p>
+                    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="es"&gt;
+&lt;head&gt;
+&lt;title&gt;Mi primera página&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Título principal&lt;/h1&gt;
+&lt;p&gt;Este es un párrafo de ejemplo.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Elemento 1&lt;/li&gt;
+&lt;li&gt;Elemento 2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+                </div>
+                <div class="col-md-4 text-center">
+                    <img src="../images/HTML.png" alt="Ejemplo HTML" class="img-fluid mb-2" style="max-width: 80px;">
+                </div>
+            </div>
+        </section>
+
+        <section class="card-tech">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2><span class="tech-icon"><i class="fa-brands fa-css3-alt"></i></span> CSS
+                    </h2>
+                    <p>
+                        <strong>CSS (Cascading Style Sheets)</strong> es el "estilista" de la
+                        web. Mientras HTML se encarga de la estructura, CSS se ocupa de la apariencia visual: colores,
+                        tipografía, márgenes, animaciones, y cómo se ve la página en diferentes dispositivos. Gracias a
+                        CSS, podemos transformar una página HTML básica en una experiencia visual atractiva y
+                        profesional.
+                    </p>
+                    <p>Ejemplo de cómo un archivo CSS estiliza la página:</p>
+                    <pre><code>body {
+font-family: 'Montserrat', sans-serif;
+background-color: #f0f4f8;
+}
+h1 {
+color: #2c3e50;
+text-align: center;
+}
+p {font-size: 1.1em;
+ line-height: 1.6;
+}
+</code></pre>
+
+                </div>
+                <div class="col-md-4 text-center">
+                    <img src="../images/CSS.png" alt="Ejemplo CSS" class="img-fluid mb-2" style="max-width: 80px;">
+
+                </div>
+
+            </div>
+        </section>
+        <section class="card-tech">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2><span class="tech-icon"><i class="fa-brands fa-bootstrap"></i></span>
+                        Bootstrap</h2>
+                    <p>
+                        <strong>Bootstrap</strong> es un framework CSS que acelera
+                        enormemente el desarrollo web. Proporciona una colección de plantillas y componentes
+                        predefinidos (como menús de navegación, botones, carruseles, etc.) que puedes usar con solo
+                        añadir clases CSS a tus elementos HTML. Su característica más poderosa es el **diseño
+                        responsivo** de forma predeterminada, lo que significa que los sitios construidos con Bootstrap
+                        se ven bien en cualquier dispositivo, ya sea un móvil, una tablet o un monitor de escritorio.
+                    </p>
+                    <p>Ejemplo de uso de Bootstrap:</p>
+                    <pre><code>&lt;button class="btn btn-primary"&gt;Botón Bootstrap&lt;/button&gt;
+&lt;div class="row"&gt;
+&lt;div class="col-md-6"&gt;Columna 1&lt;/div&gt;
+&lt;div class="col-md-6"&gt;Columna 2&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+                </div>
+                <div class="col-md-4 text-center">
+                    <img src="../images/Boostrap.jpg" alt="Ejemplo Bootstrap" class="img-fluid mb-2"
+                        style="max-width: 80px;">
+                </div>
+            </div>
+        </section>
+
+        <section class="card-tech">
+            <h2><i class="fa-solid fa-gear"></i> Cómo utilizar HTML, CSS y Bootstrap juntos</h2>
+            <p>
+                El flujo de trabajo para crear una página web moderna típicamente combina estas tres
+                tecnologías:
+            </p>
+            <ol>
+                <li><strong>Estructura con HTML:</strong> Primero, se crea el esqueleto de la página con
+                    etiquetas HTML. Se definen el encabezado, el cuerpo, secciones, párrafos, imágenes, etc.</li>
+                <li><strong>Estilo con CSS:</strong> Luego, se utiliza CSS para dar vida a esa
+                    estructura. Se definen los colores, la tipografía y el diseño, creando un archivo <code>.css</code>
+                    aparte para mantener el código limpio y organizado.</li>
+                <li><strong>Componentes y Diseño Responsivo con Bootstrap:</strong> Finalmente, para
+                    acelerar el proceso y asegurar que el diseño sea responsivo, se añaden las clases de Bootstrap. Por
+                    ejemplo, en lugar de escribir todo el CSS para un botón, simplemente se añade la clase
+                    <code>.btn</code> y <code>.btn-primary</code> a un elemento <code>&lt;button&gt;</code>. Esto crea
+                    un botón con un estilo predefinido y listo para usar en cualquier dispositivo.
+                </li>
+            </ol>
+            <p>
+                La combinación de estos tres elementos permite a los desarrolladores crear páginas web
+                atractivas, funcionales y adaptables de manera eficiente.
+            </p>
+        </section>
+
+        <section class="card-tech" id="recursos">
+            <h2><i class="fa-solid fa-link"></i> Recursos útiles</h2>
+            <ul>
+                <li><a href="https://developer.mozilla.org/es/docs/Web/HTML" target="_blank"><i
+                            class="fa-brands fa-html5"></i> MDN Web Docs: HTML</a></li>
+                <li><a href="https://developer.mozilla.org/es/docs/Web/CSS" target="_blank"><i
+                            class="fa-brands fa-css3-alt"></i> MDN Web Docs: CSS</a></li>
+                <li><a href="https://getbootstrap.com/" target="_blank"><i class="fa-brands fa-bootstrap"></i> Bootstrap
+                        Oficial</a></li>
+            </ul>
+        </section>
+    </div>
+    <div class="footer">
+        &copy; 2024 Tecnologías Web | Proyecto Web 3er Bim
+    </div>
+</body>
+
+</html>
