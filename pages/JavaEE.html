@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tecnologías Java EE – Backend y Presentación</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="../style/EstiloGeneral.css">
+    <style>
+        pre {
+            background-color: #f4f8fb;
+            border: 1px solid #dbeafe;
+            border-radius: 6px;
+            padding: 1rem;
+            font-size: 1rem;
+            font-family: 'Fira Mono', 'Consolas', 'Menlo', monospace;
+            color: #22223b;
+            margin: 1.2em 0;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo" style="margin-right:1.5rem;">
+                <a href="../index.html"><i class="fa-brands fa-java"></i> Tecnologías Java EE</a>
+            </div>
+            <ul class="nav-links" style="margin:0;">
+                <li class="dropdown" id="menuDropdown">
+                    <a class="dropbtn" href="#" id="menuBtn" aria-expanded="false" aria-haspopup="true">
+                        <i class="fa-solid fa-bars"></i> Menú
+                    </a>
+                    <div class="dropdown-content" id="dropdownContent" aria-label="submenu">
+                        <a href="TecnologiasWeb.html"><i class="fa-solid fa-code"></i> Frontend</a>
+                        <a href="JavaEE.html"><i class="fa-brands fa-java"></i> Backend Java EE</a>
+                        <a href="PersistenceORM.html"><i class="fa-solid fa-database"></i> Persistencia</a>
+                        <a href="HerramientasModelos.html"><i class="fa-solid fa-toolbox"></i> Herramientas</a>
+                        <a href="ServidorYDespliegue.html"><i class="fa-solid fa-server"></i> Servidor</a>
+                        <div style="border-top:1px solid #e0e7ff; margin:0.5rem 0;"></div>
+                        <a href="#recursos"><i class="fa-solid fa-link"></i> Recursos</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="https://kinal.org.gt/" target="_blank" class="dropbtn"><i class="fa-solid fa-school"></i> Kinal</a>
+                </li>
+            </ul>
+        </nav>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const menuBtn = document.getElementById('menuBtn');
+                const dropdown = document.getElementById('dropdownContent');
+                let open = false;
+
+                menuBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    open = !open;
+                    dropdown.style.display = open ? 'block' : 'none';
+                    menuBtn.setAttribute('aria-expanded', open);
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!menuBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                        dropdown.style.display = 'none';
+                        open = false;
+                        menuBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === "Escape") {
+                        dropdown.style.display = 'none';
+                        open = false;
+                        menuBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            });
+        </script>
+    </header>
+
+    <div class="container">
+        <div class="hero-section">
+            <h1><i class="fa-brands fa-java"></i> Tecnologías Java EE – Backend y Presentación</h1>
+            <p>Servlet, JSP, JSF, EJB</p>
+        </div>
+        <main>
+            <section id="servlet">
+                <h2><i class="fa-solid fa-server"></i> ¿Qué es un Servlet?</h2>
+                <p>
+                    Los <strong>Servlets</strong> son componentes de Java que se ejecutan en un servidor web. Su función es procesar peticiones de clientes (típicamente HTTP) y generar respuestas dinámicas. Son la base de muchas aplicaciones web en Java, actuando como el "controlador" que recibe las peticiones, las procesa, y genera una respuesta.
+                </p>
+                <pre>
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+ 
+@WebServlet("/hola")
+public class HolaServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("<h1>Hola Mundo desde un Servlet!</h1>");
+    }
+} 
+                </pre>
+            </section>
+
+            <section id="jsp">
+                <h2><i class="fa-solid fa-file-code"></i> ¿Qué es un JSP (JavaServer Pages)?</h2>
+                <p>
+                    <strong>JSP</strong> es una tecnología que permite incrustar código Java directamente en páginas HTML. Esto facilita la creación de contenido dinámico de manera más sencilla que con los Servlets puros, ya que el desarrollador puede centrarse en la estructura de la interfaz web con la potencia de Java. El servidor compila los archivos JSP en Servlets, lo que permite un renderizado eficiente.
+                </p>
+                <pre>
+&#x3c;%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%&#x3e;
+&#x3c;!DOCTYPE html&#x3e;
+&#x3c;html&#x3e;
+&#x3c;head&#x3e;
+    &#x3c;title&#x3e;Página JSP&#x3c;/title&#x3e;
+&#x3c;/head&#x3e;
+&#x3c;body&#x3e;
+    &#x3c;h1&#x3e;Hola Mundo desde una página JSP!&#x3c;/h1&#x3e;
+    &#x3c;p&#x3e;La fecha actual es: &#x3c;%= new java.util.Date() %&#x3e;&#x3c;/p&#x3e;
+&#x3c;/body&#x3e;
+&#x3c;/html&#x3e;
+                </pre>
+            </section>
+
+            <section id="jsf">
+                <h2><i class="fa-solid fa-puzzle-piece"></i> ¿Qué es JSF (JavaServer Faces)?</h2>
+                <p>
+                    <strong>JSF</strong> es un framework para construir interfaces de usuario web basadas en componentes reutilizables. A diferencia de JSP, JSF utiliza un modelo de componentes y un ciclo de vida de la petición para gestionar la interacción del usuario, la validación de datos y la navegación entre páginas. Se enfoca en el desarrollo de aplicaciones web ricas en funcionalidad y eventos.
+                </p>
+                <pre>
+&lt;html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"&gt;
+  &lt;h:head&gt;
+    &lt;title&gt;Página JSF&lt;/title&gt;
+  &lt;/h:head&gt;
+  &lt;h:body&gt;
+    &lt;h:form&gt;
+      &lt;h:outputLabel for="nombre" value="Introduce tu nombre:" /&gt;
+      &lt;h:inputText id="nombre" value="#{saludoBean.nombre}" /&gt;
+      &lt;h:commandButton value="Saludar" action="saludo" /&gt;
+    &lt;/h:form&gt;
+  &lt;/h:body&gt;
+&lt;/html&gt;
+                </pre>
+            </section>
+
+            <section id="ejb">
+                <h2><i class="fa-solid fa-brain"></i> ¿Qué son EJB (Enterprise JavaBeans)?</h2>
+                <p>
+                    <strong>EJB</strong> son componentes de servidor que encapsulan la lógica de negocio en aplicaciones empresariales Java. Ofrecen servicios avanzados como gestión de transacciones, seguridad, persistencia de datos y concurrencia. EJB facilita el desarrollo de aplicaciones distribuidas y escalables, gestionando automáticamente aspectos complejos de la infraestructura.
+                </p>
+                <pre>
+@Stateless
+public class UsuarioService {
+    @PersistenceContext(unitName="mi-persistencia")
+    private EntityManager em;
+
+    public void crearUsuario(Usuario usuario) {
+        em.persist(usuario);
+    }
+
+    public Usuario obtenerUsuario(long id) {
+        return em.find(Usuario.class, id);
+    }
+}
+                </pre>
+            </section>
+            
+            <section id="ventajas">
+                <h2><i class="fa-solid fa-thumbs-up"></i> Aplicaciones y Ventajas</h2>
+                <ul>
+                    <li> <strong>Aplicaciones:</strong> Desarrollo de aplicaciones web dinámicas, portales empresariales y sistemas de gestión complejos.</li>
+                    <li> <strong>Ventajas:</strong> Permite crear páginas web dinámicas (Servlets/JSP), ofrece un modelo de componentes para la UI (JSF) y proporciona servicios empresariales robustos (EJB), facilitando un desarrollo estructurado y escalable.</li>
+                </ul>
+            </section>
+
+            <section id="conclusion">
+                <h2><i class="fa-solid fa-flag-checkered"></i> Conclusión</h2>
+                <p>
+                    Las tecnologías Java EE (Servlets, JSP, JSF y EJB) son la base para construir aplicaciones web robustas y escalables. Su uso permite separar las responsabilidades del software y facilita un desarrollo estructurado y mantenible, lo que es esencial para proyectos empresariales.
+                </p>
+            </section>
+        </main>
+    </div>
+    <div class="footer">
+        &copy; 2024 Tecnologías Java EE | Proyecto Web 3er Bim
+    </div>
+</body>
+</html>
